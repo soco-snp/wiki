@@ -1,0 +1,26 @@
+Cosmos SDK的Demo：
+https://github.com/cosmos/cosmos-sdk/tree/develop/examples/basecoin
+Cosmos SDK的设计理念说明：
+https://github.com/cosmos/cosmos-sdk/blob/develop/docs/design.md
+Cosmos SDK（持续完善中）：
+https://github.com/cosmos/cosmos-sdk/blob/develop/docs/guide.md
+
+使用Cosmos-SDK构造一条区块链
+Cosmos-SDK提供了方便开发人员构造一条定制化的区块链所需要的开发工具。在Cosmos生态中，区块链被称为分区。若开发人员想要建立一个基于区块链的应用，只需开发各自独有的业务逻辑而无需从零开始开发。Cosmos-SDK将完成维护底层的状态机的工作，为开发者节省了大量精力。以前，开发人员只能通过fork已有项目来减少工作量，Cosmos-SDK给出了更好的解决方案。
+Cosmos-SDK可以帮助你对应用实现精确控制，通过使用插件实现Cosmos分区的高度定制化。Cosmos-SDK被设计成了一个区块链开发包，它已经包含了如下基本功能：代币、治理、抵押和跨链通信。开发人员可以在Cosmos-SDK之上通过插件实现附加功能，并且只需要简单步骤就能部署好。具体见下图：
+
+通过Cosmos-SDK创建的区块链或者ABCI应用是一个确定性状态机，可以运行在任意的复制引擎上。也就是说，在Cosmos-SDK上开发的应用可以运行在Tendermint之外的共识引擎上，例如：一个非复制引擎、一个容错引擎、或其他。在Cosmos中的一切都是模块化的。
+通过观看Sunny Aggarwal的视频，你可以更好的了解Cosmos网络的架构，便于在Cosmos-SDK上建立一个分区。
+
+SDK的主要构成部分:
+交易和消息：通用化的设计便于开发人员指定各自的编码形式。这使得SDK能够实现已有的加密货币状态机的制定功能，如以太坊。
+上下文和处理器: 每一条消息都有类型，通过 BaseApp.Router对应各自的处理器。处理消息所需的信息都包含在上下文中，它也作为处理器的第一个参数。这也是面向对象操作安全保障系统的一部分。
+存储和映射器:支持数据存储为默克尔化的持久化存储，比如以太坊的 Patricia 基数树 或 一个 IAVL 树。一个映射器提供了数据存储所需的功能，例如加载或存储账户数据。一个映射器自身不是持久化的，但是它通过上下文提供一个持久化状态。
+
+重要特性:
+1. 面向对象操作安全模型 — 当谈及安全时，应该从一个指定的威胁模型出发。我们采用以下威胁模型:
+我们假设未来有很多基于Cosmos-SDK构造的区块链应用。在这些应用当中有一些是存在漏洞的，或者被人恶意操作。
+
+Cosmos-SDK的面向对象操作安全模型是针对面临的威胁来设计的。具体可参考Cosmos-SDK设计文档：
+https://github.com/cosmos/cosmos-sdk/blob/develop/docs/design.md#object-capability-model。
+2. 带迭代器的多存储系统 — 支持多种默克尔化的数据存储，例如： Tendermint的IAVL树、以太坊的Patricia树。IAVL树由于其灵活缓存的特性，原生支持快速迭代数据，获得键值对。IAVL树也原生支持任意长度的键值，这让其更有效的支持复杂的数据结构。
